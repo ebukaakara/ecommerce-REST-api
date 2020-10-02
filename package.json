@@ -1,7 +1,7 @@
 {
-  "name": "shrink-me",
+  "name": "rest-api",
   "version": "1.0.0",
-  "description": "a url-shortener",
+  "description": "a sweet rest-api",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -9,10 +9,12 @@
   "author": "ebuka akara",
   "license": "ISC",
   "dependencies": {
+    "config": "^3.3.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "mongoose": "^5.10.7",
-    "shortid": "^2.2.15"
+    "mongoose": "^5.10.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

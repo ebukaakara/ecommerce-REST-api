@@ -1,14 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const ShortUrl = require('./models/shortUrl');
+const postsRoute = require('./routes/posts');
 const app = express();
+const cors = require('cors');
+
+// Serve dotenv files
+require('dotenv/config');
 
 // Connect database
-const db =
-   'mongodb+srv://ebuka:akara@cluster0.3un02.mongodb.net/shrinkme?retryWrites=true&w=majority';
 
 mongoose
-   .connect(db, {
+   .connect(process.env.DB, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false,
@@ -22,31 +24,19 @@ mongoose
       process.exit(1);
    });
 
-// Set vew engine
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: false }));
+// Middleware
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.get('/', async (req, res) => {
-   const shortUrls = await ShortUrl.find();
-   res.render('index', { shortUrls: shortUrls });
+// Routes
+app.use('/posts', postsRoute);
+
+app.get('/', (req, res) => {
+   res.send('Welcome');
 });
 
-app.post('/shortUrls', async (req, res) => {
-   await ShortUrl.create({ full: req.body.fullUrl });
-
-   res.redirect('/');
+// Listen to the port
+app.listen(process.env.PORT || 5000, () => {
+   console.log('good to go');
 });
-
-app.get('/:shortUrl', async (req, res) => {
-   const shortUrl = await ShortUrl.findOne({
-      short: req.params.shortUrl,
-   });
-   if (shortUrl == null) return res.sendStatus(404);
-
-   shortUrl.clicks++;
-   shortUrl.save();
-
-   res.redirect(shortUrl.full);
-});
-
-app.listen(process.env.PORT || 5000);
