@@ -1,42 +1,35 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const postsRoute = require('./routes/posts');
 const app = express();
-const cors = require('cors');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const { v4: uuidV4 } = require('uuid');
 
-// Serve dotenv files
-require('dotenv/config');
-
-// Connect database
-
-mongoose
-   .connect(process.env.DB, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useUnifiedTopology: true,
-   })
-   .then(() => {
-      console.log('MongoDB Connected...');
-   })
-   .catch(() => {
-      console.error(err.message);
-      process.exit(1);
-   });
-
-// Middleware
-app.use(cors());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-// Routes
-app.use('/posts', postsRoute);
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-   res.send('Welcome');
+   res.redirect(`/${uuidV4()}`);
 });
 
-// Listen to the port
-app.listen(process.env.PORT || 5000, () => {
+app.get('/:room', (req, res) => {
+   res.render('room', { roomId: req.params.room });
+});
+
+io.on('connection', (socket) => {
+   socket.on('join-room', (roomId, userId) => {
+      socket.join(roomId);
+      socket
+         .to(roomId)
+         .broadcast.emit('user-connected', userId);
+
+      socket.on('disconnect', () => {
+         socket
+            .to(roomId)
+            .broadcast.emit('user-disconnected', userId);
+      });
+   });
+});
+// Listen to the port via the server
+server.listen(process.env.PORT || 3000, () => {
    console.log('good to go');
 });

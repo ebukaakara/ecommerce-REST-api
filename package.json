@@ -1,7 +1,7 @@
 {
-  "name": "rest-api",
+  "name": "video-talk",
   "version": "1.0.0",
-  "description": "a sweet rest-api",
+  "description": "a sweet video chat app",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -14,7 +14,9 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "mongoose": "^5.10.7"
+    "mongoose": "^5.10.7",
+    "socket.io": "^2.3.0",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
