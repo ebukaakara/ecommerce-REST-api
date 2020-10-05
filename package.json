@@ -1,7 +1,7 @@
 {
-  "name": "video-talk",
+  "name": "zinto",
   "version": "1.0.0",
-  "description": "a sweet video chat app",
+  "description": "an e-commerce app",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -10,11 +10,18 @@
   "license": "ISC",
   "dependencies": {
     "config": "^3.3.2",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-validator": "^5.3.1",
+    "formidable": "^1.2.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
     "mongoose": "^5.10.7",
+    "morgan": "^1.10.0",
     "socket.io": "^2.3.0",
     "uuid": "^8.3.0"
   },
